@@ -53,6 +53,7 @@
             position: absolute;
             width: 800px;
             height: 800px;
+            max-width: 100vw; /* منع الخروج عن الشاشة في الجوال */
             background: radial-gradient(circle, var(--neon-gold) 0%, transparent 60%);
             filter: blur(150px);
             pointer-events: none;
@@ -71,14 +72,23 @@
         .glass-form {
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 30px;
-            padding: 50px;
+            border-radius: 20px;
+            padding: 30px 20px; /* تصغير الهوامش للجوال */
             box-shadow: 0 20px 50px rgba(0,0,0,0.8), var(--neon-glow-box);
             width: 100%;
             max-width: 600px;
             position: relative;
             z-index: 10;
+        }
+
+        /* تكبير الهوامش للشاشات الكبيرة */
+        @media (min-width: 640px) {
+            .glass-form {
+                padding: 50px;
+                border-radius: 30px;
+            }
         }
 
         /* تصميم الحقول */
@@ -202,24 +212,32 @@
     <div class="container mx-auto px-4 py-12 flex justify-center">
         <div class="glass-form">
             <!-- الشعار -->
-            <div class="text-center mb-10">
+            <div class="text-center mb-8 sm:mb-10">
                 <img src="https://cdn.prod.website-files.com/60635261197822875f187b0b/6101599912ddba5003383e9c_%D8%B4%D8%B9%D8%A7%D8%B1%20%D8%A7%D9%84%D9%85%D9%86%D9%89-19-p-500.png" 
-                     alt="شعار مؤسسة المنى" class="w-48 mx-auto mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+                     alt="شعار مؤسسة المنى" class="w-32 sm:w-48 mx-auto mb-4 sm:mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]">
                 
-                <p class="text-gold-500 text-xs font-bold mb-2 uppercase tracking-[0.4em]">Business Model Request</p>
-                <h1 class="text-4xl font-black font-heading text-white text-neon">طلب نموذج عمل لمشروعك</h1>
+                <p class="text-gold-500 text-[10px] sm:text-xs font-bold mb-2 uppercase tracking-[0.4em]">Business Model Request</p>
+                <h1 class="text-2xl sm:text-4xl font-black font-heading text-white text-neon">طلب نموذج عمل لمشروعك</h1>
             </div>
 
             <!-- النموذج -->
             <form id="business-form" onsubmit="submitForm(event)">
-                       <div class="input-group">
-                    <input type="text" id="projectName" name="projectName" class="form-control" placeholder="الاسم" required>
-                    <i class="fa-solid fa-briefcase input-icon"></i>
-                </div>
                 
+                <!-- حقل الاسم -->
+                <div class="input-group">
+                    <input type="text" id="customerName" name="customerName" class="form-control" placeholder="الاسم" required>
+                    <i class="fa-solid fa-user input-icon"></i>
+                </div>
+
                 <div class="input-group">
                     <input type="text" id="projectName" name="projectName" class="form-control" placeholder="اسم المشروع" required>
                     <i class="fa-solid fa-briefcase input-icon"></i>
+                </div>
+
+                <!-- حقل وصف المشروع (تم نقله إلى هنا) -->
+                <div class="input-group">
+                    <textarea id="projectDesc" name="projectDesc" class="form-control" placeholder="وصف مختصر للمشروع (الفكرة، الهدف، الفئة المستهدفة...)" required></textarea>
+                    <i class="fa-solid fa-pen-nib input-icon"></i>
                 </div>
 
                 <div class="input-group">
@@ -230,11 +248,6 @@
                 <div class="input-group">
                     <input type="tel" id="phone" name="phone" class="form-control" placeholder="رقم الموبايل" dir="ltr" style="text-align: right;" required>
                     <i class="fa-solid fa-phone input-icon"></i>
-                </div>
-
-                <div class="input-group">
-                    <textarea id="projectDesc" name="projectDesc" class="form-control" placeholder="وصف مختصر للمشروع (الفكرة، الهدف، الفئة المستهدفة...)" required></textarea>
-                    <i class="fa-solid fa-pen-nib input-icon"></i>
                 </div>
 
                 <button type="submit" id="submitBtn" class="submit-btn">
@@ -252,9 +265,8 @@
     </div>
 
     <script>
-        // رابط الـ Google Apps Script الخاص بك (سيتم شرح كيفية الحصول عليه)
-        // يجب استبدال هذا الرابط بالرابط الذي ستحصل عليه من Google Apps Script
-        const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+        // رابط الـ Google Apps Script الخاص بك 
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_fIxzyk7-_-sQyEANPUpz3ypy88dn168KXpNpEC5PTVPJv_4fWkKHDai4aU61LWSSbA/exec';
 
         async function submitForm(event) {
             event.preventDefault(); // منع تحديث الصفحة
@@ -269,10 +281,11 @@
 
             // جمع البيانات
             const formData = {
+                customerName: document.getElementById('customerName').value,
                 projectName: document.getElementById('projectName').value,
+                projectDesc: document.getElementById('projectDesc').value,
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
-                projectDesc: document.getElementById('projectDesc').value,
                 timestamp: new Date().toLocaleString('ar-SA')
             };
 
@@ -284,14 +297,6 @@
             submitBtn.style.opacity = '0.7';
 
             try {
-                // إذا لم تقم بوضع الرابط بعد، سنعرض رسالة نجاح وهمية لاختبار التصميم
-                if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
-                    console.log("البيانات التي سيتم إرسالها:", formData);
-                    await new Promise(resolve => setTimeout(resolve, 1500)); // محاكاة وقت التحميل
-                    showSuccess();
-                    return;
-                }
-
                 // إرسال البيانات الفعلية إلى Google Sheets
                 const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
