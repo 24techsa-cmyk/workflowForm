@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب نموذج عمل لمشروعك | مؤسسة المنى</title>
+    
+    <!-- الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- الأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: { 400: '#f6d365', 500: '#D4AF37', 600: '#b8860b' },
+                        dark: { 950: '#030303', 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a' }
+                    },
+                    fontFamily: { sans: ['Cairo', 'sans-serif'], heading: ['Tajawal', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --neon-gold: rgba(212, 175, 55, 0.6);
+            --neon-glow-text: 0 0 10px rgba(212, 175, 55, 0.8), 0 0 20px rgba(212, 175, 55, 0.4);
+            --neon-glow-box: 0 0 15px rgba(212, 175, 55, 0.3), inset 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        body {
+            background-color: #030303;
+            color: #ffffff;
+            font-family: 'Cairo', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* توهج النيون في الخلفية */
+        .neon-glow-bg {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--neon-gold) 0%, transparent 60%);
+            filter: blur(150px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .text-neon {
+            text-shadow: var(--neon-glow-text);
+        }
+
+        /* حاوية النموذج (Glassmorphism) */
+        .glass-form {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), var(--neon-glow-box);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* تصميم الحقول */
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            color: #D4AF37;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        textarea + .input-icon {
+            top: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            padding: 15px 50px 15px 20px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-control:focus {
+            border-color: #D4AF37;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .form-control:focus + .input-icon {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+            transform: scale(1.1);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: none;
+        }
+
+        /* زر الإرسال */
+        .submit-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #b8860b 100%);
+            color: #030303;
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* رسالة النجاح */
+        #success-message {
+            display: none;
+            background: rgba(33, 115, 70, 0.1);
+            border: 1px solid #217346;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        /* لودر التحميل */
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(3, 3, 3, 0.3);
+            border-radius: 50%;
+            border-top-color: #030303;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- خلفية النيون -->
+    <div class="neon-glow-bg"></div>
+
+    <div class="container mx-auto px-4 py-12 flex justify-center">
+        <div class="glass-form">
+            <!-- الشعار -->
+            <div class="text-center mb-10">
+                <img src="https://cdn.prod.website-files.com/60635261197822875f187b0b/6101599912ddba5003383e9c_%D8%B4%D8%B9%D8%A7%D8%B1%20%D8%A7%D9%84%D9%85%D9%86%D9%89-19-p-500.png" 
+                     alt="شعار مؤسسة المنى" class="w-48 mx-auto mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+                
+                <p class="text-gold-500 text-xs font-bold mb-2 uppercase tracking-[0.4em]">Business Model Request</p>
+                <h1 class="text-4xl font-black font-heading text-white text-neon">طلب نموذج عمل لمشروعك</h1>
+            </div>
+
+            <!-- النموذج -->
+            <form id="business-form" onsubmit="submitForm(event)">
+                
+                <div class="input-group">
+                    <input type="text" id="projectName" name="projectName" class="form-control" placeholder="اسم المشروع" required>
+                    <i class="fa-solid fa-briefcase input-icon"></i>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="email" name="email" class="form-control" placeholder="البريد الإلكتروني" required>
+                    <i class="fa-solid fa-envelope input-icon"></i>
+                </div>
+
+                <div class="input-group">
+                    <input type="tel" id="phone" name="phone" class="form-control" placeholder="رقم الموبايل" dir="ltr" style="text-align: right;" required>
+                    <i class="fa-solid fa-phone input-icon"></i>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="projectDesc" name="projectDesc" class="form-control" placeholder="وصف مختصر للمشروع (الفكرة، الهدف، الفئة المستهدفة...)" required></textarea>
+                    <i class="fa-solid fa-pen-nib input-icon"></i>
+                </div>
+
+                <button type="submit" id="submitBtn" class="submit-btn">
+                    <span id="btnText">إرسال البيانات</span>
+                    <i class="fa-solid fa-paper-plane" id="btnIcon"></i>
+                    <div class="loader" id="btnLoader"></div>
+                </button>
+
+                <div id="success-message">
+                    <i class="fa-solid fa-circle-check mb-2 text-2xl"></i><br>
+                    تم استلام طلبك بنجاح! سنتواصل معك قريباً.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // رابط الـ Google Apps Script الخاص بك (سيتم شرح كيفية الحصول عليه)
+        // يجب استبدال هذا الرابط بالرابط الذي ستحصل عليه من Google Apps Script
+        const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+        async function submitForm(event) {
+            event.preventDefault(); // منع تحديث الصفحة
+
+            // تجهيز عناصر الواجهة
+            const form = document.getElementById('business-form');
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnLoader = document.getElementById('btnLoader');
+            const successMsg = document.getElementById('success-message');
+
+            // جمع البيانات
+            const formData = {
+                projectName: document.getElementById('projectName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                projectDesc: document.getElementById('projectDesc').value,
+                timestamp: new Date().toLocaleString('ar-SA')
+            };
+
+            // تغيير حالة الزر إلى "جاري الإرسال"
+            submitBtn.disabled = true;
+            btnText.innerText = "جاري الإرسال...";
+            btnIcon.style.display = 'none';
+            btnLoader.style.display = 'block';
+            submitBtn.style.opacity = '0.7';
+
+            try {
+                // إذا لم تقم بوضع الرابط بعد، سنعرض رسالة نجاح وهمية لاختبار التصميم
+                if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
+                    console.log("البيانات التي سيتم إرسالها:", formData);
+                    await new Promise(resolve => setTimeout(resolve, 1500)); // محاكاة وقت التحميل
+                    showSuccess();
+                    return;
+                }
+
+                // إرسال البيانات الفعلية إلى Google Sheets
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // مهم جداً لتخطي مشاكل الـ CORS مع جوجل
+                    cache: 'no-cache',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                showSuccess();
+
+            } catch (error) {
+                console.error('Error!', error);
+                alert('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.');
+                resetButton();
+            }
+
+            function showSuccess() {
+                form.reset();
+                successMsg.style.display = 'block';
+                submitBtn.style.display = 'none';
+                
+                // إخفاء رسالة النجاح بعد 5 ثواني وإعادة الزر
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                    submitBtn.style.display = 'flex';
+                    resetButton();
+                }, 5000);
+            }
+
+            function resetButton() {
+                submitBtn.disabled = false;
+                btnText.innerText = "إرسال البيانات";
+                btnIcon.style.display = 'block';
+                btnLoader.style.display = 'none';
+                submitBtn.style.opacity = '1';
+            }
+        }
+    </script>
+</body>
+</html>
